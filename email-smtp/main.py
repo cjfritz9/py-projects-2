@@ -1,6 +1,6 @@
 from email.mime.text import MIMEText 
-import smtplib
 import datetime as dt
+import smtplib
 import random
 import pandas
 # ---------------------------- CONSTANTS ------------------------------- #
