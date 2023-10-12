@@ -64,7 +64,6 @@ def get_night_cycle():
     'sunset': formatted_times['sunset']
   }
 
-
 # ---------------------------- MAIL SENDER ------------------------------- #
 def send_mail():
   try:
@@ -79,16 +78,17 @@ def send_mail():
   except OSError:
     password = input('Enter Application Password:\n')
   
-  message = MIMEText(f'Look Up! The ISS is somewhere overhead!')
+  message = MIMEText('Look Up! The ISS is somewhere overhead!')
   message['Subject'] = 'Automated ISS Notification'
 
   connection = smtplib.SMTP(host=MAIL_HOST, port=MAIL_PORT)
   connection.starttls()
   connection.login(user=email, password=password)
-  connection.sendmail(from_addr=email, to_addrs=email, msg=message)
+  connection.sendmail(from_addr=email, to_addrs=email, msg=message.as_string())
   connection.close()
+  print('ISS in range! Notification delivered.')
 
-# ---------------------------- MAIL SENDER ------------------------------- #
+# ---------------------------- PROGRAM CYCLE ------------------------------- #
 while True:
   night_data = get_night_cycle()
 
@@ -106,4 +106,3 @@ while True:
     print(f"Daytime, sleeping until {night_data['sunset']}")
     print(f"({floor(timer / 60)} hours and {timer % 60} minutes from now)")
     sleep(timer * 60)
-
