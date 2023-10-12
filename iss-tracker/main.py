@@ -18,31 +18,15 @@ PARAMS = {
 }
 
 # ---------------------------- UTILITIES ------------------------------- #
-def format_times(sunrise_hour: int, sunrise_mins: int, sunset_hour: int, sunset_mins: int):
-  global f_sunrise_hour, f_sunrise_mins, f_sunset_hour, f_sunset_mins
-  f_sunrise_hour = f"{sunrise_hour}"
-  f_sunrise_mins = f"{sunrise_mins}"
-  f_sunset_hour = f"{sunset_hour}"
-  f_sunset_mins = f"{sunset_mins}"
-
-  if sunrise_hour < 10:
-    f_sunrise_hour = f"0{sunrise_hour}"
-  
-  if sunrise_mins < 10:
-    f_sunrise_mins = f"0{sunrise_mins}"
-  
-  if sunset_hour < 10:
-    f_sunset_hour = f"0{sunset_hour}"
-
-  if sunset_mins < 10:
-    f_sunset_mins = f"0{sunset_mins}"
+def format_times(times: list): 
+  for i in range(len(times)):
+    if times[i] < 10:
+      times[i] = f"0{times[i]}"
 
   return {
-    'sunrise': f"{f_sunrise_hour}:{f_sunrise_mins}",
-    'sunset': f"{f_sunset_hour}:{f_sunset_mins}"
+    'sunrise': f"{times[0]}:{times[1]}",
+    'sunset': f"{times[2]}:{times[3]}"
   }
-
-
 
 # ---------------------------- API REQUESTS ------------------------------- #
 def get_iss_in_range():
@@ -71,7 +55,7 @@ def get_night_cycle():
 
   is_night = local_hour >= sunset_hour or local_hour <= sunrise_hour
   sleep_timer = sunset_hour * 60 - local_hour * 60 + sunset_mins - local_mins
-  formatted_times = format_times(sunrise_hour, sunrise_mins, sunset_hour, sunset_mins)
+  formatted_times = format_times([sunrise_hour, sunrise_mins, sunset_hour, sunset_mins])
 
   return {
     'is_night': is_night,
@@ -111,11 +95,14 @@ while True:
   if night_data['is_night']:
     if get_iss_in_range():
       send_mail()
+
     else:
-      print('Not within range, checking again in 3 minutes.')
+      print('Not within range, checking again in 90 seconds.')
       sleep(90)
+
   else:
     timer = night_data['sleep_timer']
+
     print(f"Daytime, sleeping until {night_data['sunset']}")
     print(f"({floor(timer / 60)} hours and {timer % 60} minutes from now)")
     sleep(timer * 60)

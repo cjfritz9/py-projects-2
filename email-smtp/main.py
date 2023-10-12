@@ -1,3 +1,4 @@
+# ---------------------------- MAIL SENDER ------------------------------- #
 from email.mime.text import MIMEText 
 import datetime as dt
 import smtplib
@@ -7,8 +8,8 @@ import pandas
 MAIL_HOST = 'smtp.gmail.com'
 MAIL_PORT = 587
 BDAY_DATA = 'birthdays.csv'
-NOW = dt.datetime.now()
 TEMPLATE_CHOICE = random.randint(1, 3)
+NOW = dt.datetime.now()
 
 # ---------------------------- UTILITIES ------------------------------- #
 def format_age(age: int):
