@@ -50,8 +50,10 @@ def get_night_cycle():
   sunrise_mins = int(result['results']['sunrise'].split("T")[1].split(":")[1])
   sunset_hour = (int(result['results']['sunset'].split("T")[1].split(":")[0]) + TZ_OFFSET) % 24
   sunset_mins = int(result['results']['sunset'].split("T")[1].split(":")[1])
-  local_hour = dt.datetime.now().hour
-  local_mins = dt.datetime.now().minute
+  local_hour = (dt.datetime.utcnow().hour - 6) % 24
+  local_mins = dt.datetime.utcnow().minute
+
+  print(local_hour, local_mins)
 
   is_night = local_hour >= sunset_hour or local_hour <= sunrise_hour
   sleep_timer = sunset_hour * 60 - local_hour * 60 + sunset_mins - local_mins
