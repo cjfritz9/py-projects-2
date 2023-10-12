@@ -53,8 +53,6 @@ def get_night_cycle():
   local_hour = (dt.datetime.utcnow().hour - 6) % 24
   local_mins = dt.datetime.utcnow().minute
 
-  print(local_hour, local_mins)
-
   is_night = local_hour >= sunset_hour or local_hour <= sunrise_hour
   sleep_timer = sunset_hour * 60 - local_hour * 60 + sunset_mins - local_mins
   formatted_times = format_times([sunrise_hour, sunrise_mins, sunset_hour, sunset_mins])
